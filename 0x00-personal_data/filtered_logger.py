@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-define filter-datum
+implement logging
 """
 import re
 import logging
 from typing import List
+
+
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -37,3 +40,18 @@ class RedactingFormatter(logging.Formatter):
                                 record.msg, self.SEPARATOR)
         record.msg = formated
         return super(RedactingFormatter, self).format(record)
+
+
+def get_logger() -> logging.Logger:
+    """returns logging.Logger object"""
+
+    logger = logging.Logger("user_data")
+    logger.setLevel(loggng.DEBUG)
+    logger.propagate = False
+
+    stream_handler = logging.StreamHandler()
+    redacting_formatter = RedactingFormatter(fields=PII_FIELDS)
+    stream_handler.setFormatter(redacting_formatter)
+    logger.addHandler(stream_handler)
+
+    return logger
