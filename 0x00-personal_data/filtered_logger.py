@@ -63,7 +63,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     """returns a connector to the database"""
 
     db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
-    db_name = os.getenv("PERSONAL_DATA_DB_NAME", "")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
     db_user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_pwd = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     connection = mysql.connector.connect(host=db_host,
@@ -78,16 +78,19 @@ def main():
     """
     main entry point
     """
-    db = get_db()
     logger = get_logger()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM users;")
-    fields = cursor.column_names
-    for row in cursor:
-        message = "".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
-        logger.info(message.strip())
+    db_conn = get_db()
+    cursor = db_conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        row_string = ";".join(["{}={}".format(key, value)
+                              for key, value in row.items()])
+        logger.info(row_string)
+
     cursor.close()
-    db.close()
+    db_conn.close()
 
 
 if __name__ == "__main__":
