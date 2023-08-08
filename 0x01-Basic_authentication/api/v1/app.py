@@ -22,6 +22,11 @@ if os.environ.get('AUTH_TYPE') == 'auth':
 
 @app.before_request
 def before_request():
+    """
+    -Execute before each request to check for authentication and authorization.
+    -It performs authentication and authorization checks before the main view
+    function is executed.
+    """
     if not auth:
         return
     paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
