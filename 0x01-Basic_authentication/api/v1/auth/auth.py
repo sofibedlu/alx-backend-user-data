@@ -2,9 +2,9 @@
 """
 define Auth class
 """
-
 from flask import request
 from typing import List, TypeVar
+from fnmatch import fnmatch
 
 
 class Auth:
@@ -27,6 +27,10 @@ class Auth:
 
         path = path.rstrip('/')
         for excluded_path in excluded_paths:
+            if excluded_path.endswith('*'):
+                if fnmatch(path, excluded_path):
+                    return False
+
             excluded_path = excluded_path.rstrip('/')
             if path == excluded_path:
                 return False
