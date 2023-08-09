@@ -79,7 +79,8 @@ class BasicAuth(Auth):
                 or user_pwd is None or type(user_pwd) is not str):
             return None
 
-        matching_users = User.search(attributes={'email': user_email})
+        user = User()
+        matching_users = user.search(attributes={'email': user_email})
 
         if not matching_users:
             return None
