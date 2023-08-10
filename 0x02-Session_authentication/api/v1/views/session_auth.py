@@ -22,7 +22,8 @@ def session_login():
     if not password:
         return jsonify({"error": "password missing"}), 400
 
-    matching_users = User.search(attributes={'email': email})
+    user = User()
+    matching_users = user.search(attributes={'email': email})
     if not matching_users:
         return jsonify({"error": "no user found for this email"})
 
