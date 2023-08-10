@@ -1,4 +1,4 @@
-#!/usr/bin/euser_id_by_session_idnv python3
+#!/usr/bin/env python3
 """
 SessionAuth Module
 """
