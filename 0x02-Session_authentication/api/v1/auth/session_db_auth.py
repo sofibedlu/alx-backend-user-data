@@ -50,11 +50,9 @@ class SessionDBAuth(SessionExpAuth):
 
         user_session = user_session[0]
         if self.session_duration <= 0:
-            return None
+            return user_session.user_id
 
         created_at = user_session.created_at
-        if "created_at" not in user_session.to_json():
-            return Non
 
         expiration_time = created_at + timedelta(seconds=self.session_duration)
         if expiration_time < datetime.utcnow():
