@@ -43,7 +43,8 @@ class SessionDBAuth(SessionExpAuth):
         if session_id is None:
             return None
 
-        user_session = UserSession.search({'session_id': session_id})
+        user_session = UserSession()
+        user_session = user_session.search({'session_id': session_id})
 
         if not user_session:
             return None
