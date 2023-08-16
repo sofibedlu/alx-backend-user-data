@@ -39,9 +39,13 @@ def login() -> str:
     """
     Perform user login via a POST request.
     """
-
     email = request.form.get('email')
+    if not email:
+        return jsonify({"error": "email missing"}), 400
+
     password = request.form.get('password')
+    if not password:
+        return jsonify({"error": "password missing"}), 400
 
     if not Auth.valid_login(email, password):
         abort(401)
