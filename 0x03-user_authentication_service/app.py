@@ -39,15 +39,9 @@ def login() -> str:
     """
     Perform user login via a POST request.
     """
-    form_data = request.form
 
-    if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
-    if "password" not in form_data:
-        return jsonify({"message": "password required"}), 400
-
-    email = request.form['email']
-    password = request.form['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
 
     if not Auth.valid_login(email, password):
         abort(401)
