@@ -20,7 +20,7 @@ def index():
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
-def users():
+def users() -> str:
     """
     Create a new user via a POST request.
     """
@@ -35,10 +35,17 @@ def users():
 
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
-def login():
+def login() -> str:
     """
     Perform user login via a POST request.
     """
+    form_data = request.form
+
+    if "email" not in form_data:
+        return jsonify({"message": "email required"}), 400
+    if "password" not in form_data:
+        return jsonify({"message": "password required"}), 400
+
     email = request.form['email']
     password = request.form['password']
 
