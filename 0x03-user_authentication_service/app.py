@@ -4,6 +4,7 @@ Start Flask app
 """
 
 from flask import Flask, jsonify, request, abort, redirect
+from flask Response
 from auth import Auth
 
 
@@ -72,7 +73,7 @@ def logout():
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
-def profile():
+def profile() -> Response:
     """
     Respond to the GET /profile route.
     """
