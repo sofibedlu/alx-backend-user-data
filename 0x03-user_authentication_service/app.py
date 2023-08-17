@@ -4,7 +4,7 @@ Start Flask app
 """
 
 from flask import Flask, jsonify, request, abort, redirect
-from flask Response
+from flask import Response
 from auth import Auth
 from user import User
 from typing import Optional
