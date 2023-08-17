@@ -7,6 +7,7 @@ from flask import Flask, jsonify, request, abort, redirect
 from flask Response
 from auth import Auth
 from user import User
+from typing import Optional
 
 
 Auth = Auth()
@@ -74,12 +75,12 @@ def logout():
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
-def profile() -> Response:
+def profile() -> str:
     """
     Respond to the GET /profile route.
     """
-    session_id: str = request.cookies.get('session_id')
-    user: User = Auth.get_user_from_session_id(session_id)
+    session_id: Optional[str] = request.cookies.get('session_id')
+    user: Optional[User] = Auth.get_user_from_session_id(session_id)
     if user:
         return jsonify({"email": user.email}), 200
     else:
