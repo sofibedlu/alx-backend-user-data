@@ -74,7 +74,7 @@ def logout():
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
     """
-    Retrieve user profile based on the provided session ID.
+    Respond to the GET /profile route.
     """
     session_id = request.cookies.get('session_id')
     user = Auth.get_user_from_session_id(session_id)
