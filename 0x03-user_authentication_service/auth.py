@@ -86,5 +86,6 @@ class Auth:
         """
         try:
             self._db.update_user(user.id, session_id=None)
+            return None
         except NoResultFound:
-            pass
+            return None
