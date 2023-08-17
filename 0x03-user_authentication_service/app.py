@@ -47,14 +47,14 @@ def login() -> str:
     if not password:
         return jsonify({"error": "password missing"}), 400
 
-    if not Auth.valid_login(email, password):
+    if Auth.valid_login(email, password):
+        session_id = Auth.create_session(email)
+        data = {"email": email, "message": "logged in"}
+        response = jsonify(data)
+        response.set_cookie('session_id', session_id)
+        return response
+    else:
         abort(401)
-    session_id = Auth.create_session(email)
-    data = {"email": email, "message": "logged in"}
-    response = jsonify(data)
-    response.set_cookie('session_id', session_id)
-
-    return response
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
