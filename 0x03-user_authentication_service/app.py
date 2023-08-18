@@ -10,7 +10,7 @@ from user import User
 from typing import Optional
 
 
-Auth = Auth()
+AUTH = Auth()
 app = Flask(__name__)
 
 
@@ -31,7 +31,7 @@ def users() -> str:
     password = request.form['password']
 
     try:
-        user = Auth.register_user(email, password)
+        user = AUTH.register_user(email, password)
         return jsonify({"email": email, "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
@@ -50,8 +50,8 @@ def login() -> str:
     if not password:
         return jsonify({"error": "password missing"}), 400
 
-    if Auth.valid_login(email, password):
-        session_id = Auth.create_session(email)
+    if AUTH.valid_login(email, password):
+        session_id = AUTH.create_session(email)
         data = {"email": email, "message": "logged in"}
         response = jsonify(data)
         response.set_cookie('session_id', session_id)
@@ -66,9 +66,9 @@ def logout():
     Perform user logout via a DELETE request.
     """
     session_id = request.cookies.get('session_id')
-    user = Auth.get_user_from_session_id(session_id)
+    user = AUTH.get_user_from_session_id(session_id)
     if user:
-        Auth.destroy_session(user.id)
+        AUTH.destroy_session(user.id)
         return redirect('/')
     else:
         abort(403)
@@ -80,7 +80,7 @@ def profile() -> str:
     Respond to the GET /profile route.
     """
     session_id: Optional[str] = request.cookies.get('session_id')
-    user: Optional[User] = Auth.get_user_from_session_id(session_id)
+    user: Optional[User] = AUTH.get_user_from_session_id(session_id)
     if user:
         return jsonify({"email": user.email}), 200
     else:
@@ -95,7 +95,7 @@ def get_reset_password_token():
     email = request.form.get('email')
     if email:
         try:
-            reset_token = Auth.get_reset_password_token(email)
+            reset_token = AUTH.get_reset_password_token(email)
             return jsonify({"email": email, "reset_token": reset_token})
         except ValueError:
             abort(403)
@@ -114,7 +114,7 @@ def update_password():
     new_password = request.form.get('new_password')
 
     try:
-        Auth.update_password(reset_token, new_password)
+        AUTH.update_password(reset_token, new_password)
         return jsonify({"email": email, "message": "Password updated"}), 200
     except ValueError:
         abort(403)
